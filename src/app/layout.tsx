@@ -19,13 +19,13 @@ export default function RootLayout({
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased bg-gray-500",
+          "min-h-screen bg-background font-sans antialiased bg-gray-100",
           fontSans.variable
         )}
       >
-        <div className="flex gap-12 items-start">
+        <div className="flex gap-5 items-start">
           <Sidebar />
-          <main className="flex-1">{children}</main>
+          <main className="flex flex-1 h-screen min-h-full">{children}</main>
         </div>
       </body>
     </html>

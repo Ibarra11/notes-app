@@ -20,7 +20,7 @@ export default function SidebarFoldersList({
         return (
           <li>
             <Link
-              href={`/folder/${folder.id}`}
+              href={`/folder/${folder.name}/${folder.id}`}
               className={cn(
                 "block hover:bg-gray-500 hover:text-white transition-colors",
                 isActive && "bg-gray-500 text-white"
