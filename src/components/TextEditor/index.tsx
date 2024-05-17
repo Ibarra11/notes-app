@@ -35,17 +35,12 @@ export default function TextEditor({ note }: { note: Note }) {
     onError,
     editorState: () => {
       const paragraphNode = $createParagraphNode();
-      // Create a new TextNode
       const textNode = $createTextNode(note.content);
-
-      // Append the text node to the paragraph
       paragraphNode.append(textNode);
       $getRoot().append(paragraphNode);
       $getRoot().selectEnd();
     },
   };
-
-  console.log(note);
 
   return (
     <LexicalComposer initialConfig={initialConfig}>

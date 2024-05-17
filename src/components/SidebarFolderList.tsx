@@ -18,7 +18,7 @@ export default function SidebarFoldersList({
       {folders.map((folder) => {
         const isActive = folder.id === params.folderId;
         return (
-          <li>
+          <li key={folder.id}>
             <Link
               href={`/folder/${folder.name}/${folder.id}`}
               className={cn(

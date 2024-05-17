@@ -35,10 +35,13 @@ export default function SidebarMoreActions() {
         <h2 className="text-xs font-semibold">More</h2>
       </div>
       <ul className="space-y-1">
-        {MORE_ACTIONS.map((action) => {
+        {MORE_ACTIONS.map((action, i) => {
           const isActive = action.href.includes(moreSlug as string);
           return (
-            <li className="hover:bg-gray-500 hover:text-white transition-colors">
+            <li
+              key={i}
+              className="hover:bg-gray-500 hover:text-white transition-colors"
+            >
               <Link
                 href={action.href}
                 className={cn(

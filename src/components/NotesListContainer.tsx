@@ -11,6 +11,9 @@ export default async function NotesListContainer({
     where: {
       folderId: folderId,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
   return <NotesList notes={notes} />;
 }

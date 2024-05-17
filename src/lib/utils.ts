@@ -13,3 +13,15 @@ export async function minDelay<T>(result: Promise<T>, ms: number) {
 
   return p;
 }
+export function debounce<TArgs extends any[]>(
+  callback: (...args: TArgs) => any,
+  wait: number
+) {
+  let timeoutId: undefined | number = undefined;
+  return (...args: TArgs) => {
+    window.clearTimeout(timeoutId);
+    timeoutId = window.setTimeout(() => {
+      callback.apply(null, args);
+    }, wait);
+  };
+}

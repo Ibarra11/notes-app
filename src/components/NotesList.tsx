@@ -2,36 +2,62 @@
 import { Note } from "@prisma/client";
 import React from "react";
 import NotesListHeader from "./NotesListHeader";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function NotesList({ notes }: { notes: Note[] }) {
-  const [noteList, setNoteList] = React.useState(notes);
-  const { folderId, folderName } =
-    useParams<Record<"folderId" | "folderName", string>>();
+  const [tempNote, setTempNote] = React.useState<Note | null>(null);
+  const { folderId, folderName, noteId } =
+    useParams<Record<"folderId" | "folderName" | "noteId", string>>();
+  const pathname = usePathname();
+
+  React.useEffect(() => {
+    console.log("noteId: ", noteId);
+    if (tempNote && tempNote.id !== noteId) {
+      setTempNote(null);
+    }
+  }, [noteId]);
 
   function handleCreateNote() {
     const newNote: Note = {
       id: crypto.randomUUID(),
-      title: "New note",
-      content: "New note hello how are you",
+      title: "",
+      content: "",
       folderId,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    setNoteList([newNote, ...noteList]);
+    setTempNote(newNote);
   }
 
   return (
-    <div className="space-y-8 border border-green-500 w-96">
+    <div className="space-y-8 py-7 border border-green-500 w-96">
       <NotesListHeader
         onCreateNote={handleCreateNote}
         folderName={folderName}
       />
       <ul className="space-y-5 w-full h-full background-red-500">
-        {noteList.map((note) => (
-          <li className="p-5 space-y-2 rounded bg-gray-500">
-            <Link href={`/folder/${folderName}/${folderId}/${note.id}`}>
+        {tempNote && (
+          <li key={tempNote.id} className="p-5 space-y-2 rounded bg-gray-500">
+            <Link
+              href={`/folder/${folderName}/${folderId}/note/${tempNote.id}`}
+            >
+              <h3 className=" text-lg font-semibold text-gray-50">
+                {tempNote.title}
+              </h3>
+              <div className="flex gap-2  text-sm">
+                <time className="text-gray-400">
+                  {tempNote.updatedAt.getHours()}:
+                  {tempNote.updatedAt.getMinutes()}
+                </time>
+                <p className="text-gray-300">{tempNote.content}</p>
+              </div>
+            </Link>
+          </li>
+        )}
+        {notes.map((note) => (
+          <li key={note.id} className="p-5 space-y-2 rounded bg-gray-500">
+            <Link href={`/folder/${folderName}/${folderId}/note/${note.id}`}>
               <h3 className=" text-lg font-semibold text-gray-50">
                 {note.title}
               </h3>
