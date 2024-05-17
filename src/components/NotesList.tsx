@@ -2,17 +2,15 @@
 import { Note } from "@prisma/client";
 import React from "react";
 import NotesListHeader from "./NotesListHeader";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 
 export default function NotesList({ notes }: { notes: Note[] }) {
   const [tempNote, setTempNote] = React.useState<Note | null>(null);
   const { folderId, folderName, noteId } =
     useParams<Record<"folderId" | "folderName" | "noteId", string>>();
-  const pathname = usePathname();
 
   React.useEffect(() => {
-    console.log("noteId: ", noteId);
     if (tempNote && tempNote.id !== noteId) {
       setTempNote(null);
     }
@@ -36,7 +34,7 @@ export default function NotesList({ notes }: { notes: Note[] }) {
         onCreateNote={handleCreateNote}
         folderName={folderName}
       />
-      <ul className="space-y-5 w-full h-full background-red-500">
+      <ul className="space-y-5">
         {tempNote && (
           <li key={tempNote.id} className="p-5 space-y-2 rounded bg-gray-500">
             <Link
