@@ -7,13 +7,5 @@ export default async function NotesListContainer({
 }: {
   folderId: string;
 }) {
-  const notes = await prisma.note.findMany({
-    where: {
-      folderId: folderId,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  });
-  return <NotesList notes={notes} />;
+  return <NotesList />;
 }

@@ -5,6 +5,7 @@ import React from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import { updateTitle } from "../actions/note.actions";
 import { useRouter } from "next/navigation";
+import { NotesContext } from "./NotesProvider";
 
 export default function NoteHeader({
   note,
@@ -13,6 +14,7 @@ export default function NoteHeader({
   note: Note;
   folderName: string;
 }) {
+  const { handleTitleNoteChange } = React.useContext(NotesContext);
   const [title, setTitle] = React.useState(note.title);
   const router = useRouter();
   const debouncedUpdateTitle = useDebounce(async () => {
@@ -29,6 +31,7 @@ export default function NoteHeader({
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value);
+    handleTitleNoteChange(note.id, e.target.value);
     debouncedUpdateTitle();
   }
 

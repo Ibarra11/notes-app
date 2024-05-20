@@ -1,16 +1,29 @@
+import NotesList from "@/src/components/NotesList";
 import NotesListContainer from "@/src/components/NotesListContainer";
+import NotesProvider, { NotesContext } from "@/src/components/NotesProvider";
+import { prisma } from "@/src/db";
 
-export default function FolderLayout({
+export default async function FolderLayout({
   params,
   children,
 }: React.PropsWithChildren<{
   params: { folderName: string; folderId: string };
 }>) {
   const { folderId } = params;
+  const notes = await prisma.note.findMany({
+    where: {
+      folderId: folderId,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
   return (
     <div className="flex gap-8 h-screen w-full ">
-      <NotesListContainer folderId={folderId} />
-      <div className="flex-1">{children}</div>
+      <NotesProvider notes={notes}>
+        <NotesList />
+        <div className="flex-1">{children}</div>
+      </NotesProvider>
     </div>
   );
 }

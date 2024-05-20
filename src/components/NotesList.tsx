@@ -4,8 +4,10 @@ import React from "react";
 import NotesListHeader from "./NotesListHeader";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { NotesContext } from "./NotesProvider";
 
-export default function NotesList({ notes }: { notes: Note[] }) {
+export default function NotesList() {
+  const { notes } = React.useContext(NotesContext);
   const [tempNote, setTempNote] = React.useState<Note | null>(null);
   const { folderId, folderName, noteId } =
     useParams<Record<"folderId" | "folderName" | "noteId", string>>();

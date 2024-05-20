@@ -1,25 +1,8 @@
 import NoteContainer from "@/src/components/NoteContainer";
 import NoteHeader from "@/src/components/NoteHeader";
-import NoteMetaData from "@/src/components/NoteMetadata";
-import NotesListContainer from "@/src/components/NotesListContainer";
 import TextEditor from "@/src/components/TextEditor";
-import { Input } from "@/src/components/ui/input";
 import { prisma } from "@/src/db";
 import { Note } from "@prisma/client";
-import { $createParagraphNode, $createTextNode } from "lexical";
-
-async function loadContent(note: Note) {
-  // Create a new ParagraphNode
-
-  const paragraphNode = $createParagraphNode();
-
-  // Create a new TextNode
-  const textNode = $createTextNode(note.content);
-
-  // Append the text node to the paragraph
-  paragraphNode.append(textNode);
-  return paragraphNode;
-}
 
 export default async function Note({
   params,
