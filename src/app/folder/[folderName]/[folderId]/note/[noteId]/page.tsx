@@ -41,15 +41,17 @@ export default async function Note({
     defaultNote = {
       id: crypto.randomUUID(),
       title: "New note",
-      content: "New note hello how are you",
+      content: "",
       folderId,
       createdAt: new Date(),
       updatedAt: new Date(),
+      preview: "",
     };
+
     return (
       <NoteContainer>
         <NoteHeader folderName={folderName} note={defaultNote} />
-        <TextEditor note={defaultNote} />
+        <TextEditor note={defaultNote ?? note} />
       </NoteContainer>
     );
   }

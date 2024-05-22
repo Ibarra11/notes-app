@@ -6,6 +6,7 @@ interface ContextState {
   notes: Note[];
   handleTitleNoteChange: (noteId: string, newTitle: string) => void;
   handleNotesChange: (nextNotes: Note[]) => void;
+  handleUpdateNoteChange: (noteId: string, newContent: string) => void;
 }
 
 export const NotesContext = React.createContext<ContextState>(
@@ -17,6 +18,16 @@ export default function NotesProvider(props: {
   notes: Note[];
 }) {
   const [notes, setNotes] = React.useState<Note[]>(props.notes);
+
+  function handleUpdateNoteChange(noteId: string, newContent: string) {
+    const nextNotes = notes.map((note) => {
+      if (note.id === noteId) {
+        return { ...note, content: newContent };
+      }
+      return note;
+    });
+    setNotes(nextNotes);
+  }
 
   function handleTitleNoteChange(noteId: string, newTitle: string) {
     const nextNotes = notes.map((note) => {
@@ -32,9 +43,18 @@ export default function NotesProvider(props: {
     setNotes(nextNotes);
   }
 
+  React.useEffect(() => {
+    setNotes(props.notes);
+  }, [props.notes]);
+
   return (
     <NotesContext.Provider
-      value={{ notes, handleTitleNoteChange, handleNotesChange }}
+      value={{
+        notes,
+        handleTitleNoteChange,
+        handleNotesChange,
+        handleUpdateNoteChange,
+      }}
     >
       {props.children}
     </NotesContext.Provider>

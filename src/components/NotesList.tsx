@@ -1,14 +1,15 @@
 "use client";
-import { Note } from "@prisma/client";
+import Prisma from "@prisma/client";
 import React from "react";
 import NotesListHeader from "./NotesListHeader";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { NotesContext } from "./NotesProvider";
+import Note from "./Note";
 
 export default function NotesList() {
   const { notes } = React.useContext(NotesContext);
-  const [tempNote, setTempNote] = React.useState<Note | null>(null);
+  const [tempNote, setTempNote] = React.useState<Prisma.Note | null>(null);
   const { folderId, folderName, noteId } =
     useParams<Record<"folderId" | "folderName" | "noteId", string>>();
 
@@ -19,13 +20,14 @@ export default function NotesList() {
   }, [noteId]);
 
   function handleCreateNote() {
-    const newNote: Note = {
+    const newNote: Prisma.Note = {
       id: crypto.randomUUID(),
       title: "",
       content: "",
       folderId,
       createdAt: new Date(),
       updatedAt: new Date(),
+      preview: "",
     };
     setTempNote(newNote);
   }
@@ -56,19 +58,12 @@ export default function NotesList() {
           </li>
         )}
         {notes.map((note) => (
-          <li key={note.id} className="p-5 space-y-2 rounded bg-gray-500">
-            <Link href={`/folder/${folderName}/${folderId}/note/${note.id}`}>
-              <h3 className=" text-lg font-semibold text-gray-50">
-                {note.title}
-              </h3>
-              <div className="flex gap-2  text-sm">
-                <time className="text-gray-400">
-                  {note.updatedAt.getHours()}:{note.updatedAt.getMinutes()}
-                </time>
-                <p className="text-gray-300">{note.content}</p>
-              </div>
-            </Link>
-          </li>
+          <Note
+            key={note.id}
+            note={note}
+            folderId={folderId}
+            folderName={folderName}
+          />
         ))}
       </ul>
     </div>

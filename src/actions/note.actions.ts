@@ -22,11 +22,31 @@ export async function updateTitle({
     create: {
       title: newTitle,
       content: "",
+      preview: "",
       Folder: {
         connect: {
           id: folderId,
         },
       },
+    },
+  });
+  revalidatePath(`/folder/[folderName]`, "layout");
+  return note;
+}
+
+export async function updateNoteContent({
+  noteId,
+  content,
+}: {
+  noteId: string;
+  content: string;
+}) {
+  const note = await prisma.note.update({
+    where: {
+      id: noteId,
+    },
+    data: {
+      content,
     },
   });
   revalidatePath(`/folder/[folderName]`, "layout");
