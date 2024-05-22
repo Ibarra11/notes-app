@@ -1,6 +1,6 @@
 import NotesList from "@/src/components/NotesList";
-import NotesListContainer from "@/src/components/NotesListContainer";
-import NotesProvider, { NotesContext } from "@/src/components/NotesProvider";
+
+import NotesProvider from "@/src/components/NotesProvider";
 import { prisma } from "@/src/db";
 
 export default async function FolderLayout({
@@ -18,6 +18,7 @@ export default async function FolderLayout({
       updatedAt: "desc",
     },
   });
+
   return (
     <div className="flex gap-8 h-screen w-full ">
       <NotesProvider notes={notes}>

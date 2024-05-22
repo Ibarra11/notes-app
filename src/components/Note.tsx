@@ -3,6 +3,7 @@ import { createHeadlessEditor } from "@lexical/headless";
 import { Note } from "@prisma/client";
 import { $getRoot } from "lexical";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 export default function Note({
   note,
@@ -22,7 +23,7 @@ export default function Note({
         <h3 className=" text-lg font-semibold text-gray-50">{note.title}</h3>
         <div className="flex items-center gap-2 text-sm border border-red-500">
           <time className="text-gray-200 text-base">
-            {note.updatedAt.getHours()}:{note.updatedAt.getMinutes()}
+            {dayjs(note.updatedAt).format("DD/MM/YYYY")}
           </time>
           <NoteContent content={note.content} />
         </div>
