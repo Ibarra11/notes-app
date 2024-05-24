@@ -34,30 +34,46 @@ function onError(error: unknown) {
   console.error(error);
 }
 
-export default function TextEditor({ note }: { note: Note }) {
+export default function TextEditor(props: { note: Note | null }) {
   const [editorState, setEditorState] = React.useState("");
-  const { handleUpdateNoteChange } = React.useContext(NotesContext);
+  const {
+    handleContentNoteChange,
+    handleUpdateNote,
+    notes,
+    tempNote,
+    handleUpdateTempNote,
+  } = React.useContext(NotesContext);
+  const note = props.note
+    ? props.note
+    : notes.find((note) => note.id === tempNote?.id);
+
   const initialConfig = {
     namespace: "MyEditor",
     onError,
-    editorState: note.content || null,
+    editorState: note?.content || null,
   };
 
   const debouncedUpdateContent = useDebounce(async () => {
-    await updateNoteContent({
+    if (!note) return;
+    const newNote = await updateNoteContent({
       noteId: note.id,
       content: editorState,
     });
+    handleUpdateNote(note.id, newNote);
   });
 
-  function onChange(editorState: EditorState) {
+  if (!note) return null;
+
+  const onChange = (editorState: EditorState) => {
     const editorStateJSON = editorState.toJSON();
     // However, we still have a JavaScript object, so we need to convert it to an actual string with JSON.stringify
     setEditorState(JSON.stringify(editorStateJSON));
-    handleUpdateNoteChange(note.id, JSON.stringify(editorStateJSON));
-
+    handleContentNoteChange(note.id, JSON.stringify(editorStateJSON));
     debouncedUpdateContent();
-  }
+    if (tempNote && tempNote.temp) {
+      handleUpdateTempNote({ ...tempNote, temp: false });
+    }
+  };
 
   return (
     <LexicalComposer initialConfig={initialConfig}>

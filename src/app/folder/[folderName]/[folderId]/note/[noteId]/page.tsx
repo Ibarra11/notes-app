@@ -37,24 +37,28 @@ export default async function Note({
   }
 
   // there is a folder, but there is no entry for the note, then it is a temporary note
-  if (!note) {
-    defaultNote = {
-      id: crypto.randomUUID(),
-      title: "New note",
-      content: "",
-      folderId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      preview: "",
-    };
+  // if (!note) {
+  //   defaultNote = {
+  //     id: noteId,
+  //     title: "New note",
+  //     content: "",
+  //     folderId,
+  //     createdAt: new Date(),
+  //     updatedAt: new Date(),
+  //     preview: "",
+  //   };
 
-    return (
-      <NoteContainer>
-        <NoteHeader folderName={folderName} note={defaultNote} />
-        <TextEditor note={defaultNote ?? note} />
-      </NoteContainer>
-    );
-  }
+  //   return (
+  //     <NoteContainer>
+  //       <NoteHeader
+  //         temporary={true}
+  //         folderName={folderName}
+  //         note={defaultNote}
+  //       />
+  //       <TextEditor note={defaultNote ?? note} />
+  //     </NoteContainer>
+  //   );
+  // }
 
   // note is valid and it belongs to this current folder
   return (

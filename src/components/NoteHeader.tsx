@@ -4,37 +4,69 @@ import { Input } from "./ui/input";
 import React from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import { updateTitle } from "../actions/note.actions";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { NotesContext } from "./NotesProvider";
 
 export default function NoteHeader({
-  note,
   folderName,
+  ...props
 }: {
-  note: Note;
+  note: Note | null;
   folderName: string;
 }) {
-  const { handleTitleNoteChange } = React.useContext(NotesContext);
-  const [title, setTitle] = React.useState(note.title);
+  const {
+    handleTitleNoteChange,
+    notes,
+    handleUpdateNote,
+    tempNote,
+    handleUpdateTempNote,
+  } = React.useContext(NotesContext);
+  const note = props.note
+    ? props.note
+    : notes.find((note) => note.id === tempNote?.id);
+
+  const [title, setTitle] = React.useState(note ? note.title : "");
   const router = useRouter();
+
   const debouncedUpdateTitle = useDebounce(async () => {
+    if (!note) return;
     const updatedNote = await updateTitle({
       folderId: note.folderId,
       noteId: note.id,
       newTitle: title,
     });
+    if (tempNote) {
+      //   const nextNotes = notes.map((n) => {
+      //     if (n.id === tempNote.id) {
+      //       return updatedNote;
+      //     }
+      //     return n;
+      //   });
 
-    router.push(
-      `/folder/${folderName}/${note.folderId}/note/${updatedNote.id}`
-    );
+      handleUpdateNote(tempNote.id, updatedNote);
+      handleUpdateTempNote(null);
+      if (window.location.pathname.includes(note.id)) {
+        router.push(
+          `/folder/${folderName}/${updatedNote.folderId}/note/${updatedNote.id}`
+        );
+      }
+      return;
+    }
+    handleUpdateNote(updatedNote.id, updatedNote);
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  if (!note) {
+    return null;
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
     handleTitleNoteChange(note.id, e.target.value);
     debouncedUpdateTitle();
-  }
-
+    if (tempNote && tempNote.temp) {
+      handleUpdateTempNote({ ...tempNote, temp: false });
+    }
+  };
   return (
     <Input
       value={title}

@@ -30,7 +30,7 @@ export async function updateTitle({
       },
     },
   });
-  revalidatePath(`/folder/[folderName]`, "layout");
+  //   revalidatePath(`/folder/[folderName]`, "layout");
   return note;
 }
 
@@ -49,6 +49,6 @@ export async function updateNoteContent({
       content,
     },
   });
-  revalidatePath(`/folder/[folderName]`, "layout");
+  //   revalidatePath(`/folder/[folderName]`, "layout");
   return note;
 }
