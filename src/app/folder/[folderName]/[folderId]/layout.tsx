@@ -20,7 +20,7 @@ export default async function FolderLayout({
   });
 
   return (
-    <div className="flex gap-8 h-screen w-full ">
+    <div className="flex h-screen w-full ">
       <NotesProvider notes={notes}>
         <NotesList />
         <div className="flex-1">{children}</div>

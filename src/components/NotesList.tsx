@@ -36,12 +36,13 @@ export default function NotesList() {
   }
 
   return (
-    <div className="space-y-8 py-7 border border-green-500 w-96">
+    <div className="w-96 bg-gray-200 border-r border-gray-400">
       <NotesListHeader
+        noteCount={notes.length}
         onCreateNote={handleCreateNote}
         folderName={folderName}
       />
-      <ul className="space-y-5">
+      <ul>
         {notes.map((note) => (
           <Note
             key={note.id}

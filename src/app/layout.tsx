@@ -23,7 +23,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div className="flex gap-5 items-start">
+        <div className="flex items-start">
           <Sidebar />
           <main className="flex flex-1 h-screen min-h-full">{children}</main>
         </div>

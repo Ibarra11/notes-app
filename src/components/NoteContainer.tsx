@@ -4,8 +4,6 @@ export default function NoteContainer({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-4 h-full border-4 border-red-500 p-12">
-      {children}
-    </div>
+    <div className="flex flex-col gap-4 h-full bg-gray-100">{children}</div>
   );
 }

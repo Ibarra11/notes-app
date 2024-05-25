@@ -63,7 +63,7 @@ export default async function Note({
   // note is valid and it belongs to this current folder
   return (
     <NoteContainer>
-      <NoteHeader folderName={folderName} note={note} />
+      {/* <NoteHeader folderName={folderName} note={note} /> */}
       <TextEditor note={note} />
     </NoteContainer>
   );

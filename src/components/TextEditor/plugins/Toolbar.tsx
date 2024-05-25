@@ -12,13 +12,24 @@ import {
   UNDO_COMMAND,
 } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Bold, RotateCcw, RotateCw } from "lucide-react";
+import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+  Bold,
+  BoldIcon,
+  ItalicIcon,
+  RotateCcw,
+  RotateCw,
+  Strikethrough,
+  StrikethroughIcon,
+  UnderlineIcon,
+} from "lucide-react";
+import ToolbarButton from "./ToolbarButton";
+import ToolbarButtonGroup from "./ToolbarButtonGroup";
 
 const LowPriority = 1;
-
-function Divider() {
-  return <div className="divider" />;
-}
 
 export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -54,7 +65,7 @@ export default function ToolbarPlugin() {
           $updateToolbar();
           return false;
         },
-        LowPriority
+        LowPriority,
       ),
       editor.registerCommand(
         CAN_UNDO_COMMAND,
@@ -62,7 +73,7 @@ export default function ToolbarPlugin() {
           setCanUndo(payload);
           return false;
         },
-        LowPriority
+        LowPriority,
       ),
       editor.registerCommand(
         CAN_REDO_COMMAND,
@@ -70,108 +81,110 @@ export default function ToolbarPlugin() {
           setCanRedo(payload);
           return false;
         },
-        LowPriority
-      )
+        LowPriority,
+      ),
     );
   }, [editor, $updateToolbar]);
 
   return (
-    <div className="flex  bg-gray-200" ref={toolbarRef}>
-      <button
-        disabled={!canUndo}
-        onClick={() => {
-          editor.dispatchCommand(UNDO_COMMAND, undefined);
-        }}
-        className="border-0 flex item-center justify-between p-2 shrink-0 align-middle"
-        aria-label="Undo"
-      >
-        <RotateCcw className="size-4" />
-        {/* <i className="format undo" /> */}
-      </button>
-      <button
-        disabled={!canRedo}
-        onClick={() => {
-          editor.dispatchCommand(REDO_COMMAND, undefined);
-        }}
-        className="toolbar-item"
-        aria-label="Redo"
-      >
-        <RotateCw className="size-4" />
-      </button>
-      <Divider />
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
-        }}
-        className={"toolbar-item spaced " + (isBold ? "active" : "")}
-        aria-label="Format Bold"
-      >
-        <i className="format bold" />
-      </button>
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
-        }}
-        className={"toolbar-item spaced " + (isItalic ? "active" : "")}
-        aria-label="Format Italics"
-      >
-        <i className="format italic" />
-      </button>
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
-        }}
-        className={"toolbar-item spaced " + (isUnderline ? "active" : "")}
-        aria-label="Format Underline"
-      >
-        <i className="format underline" />
-      </button>
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
-        }}
-        className={"toolbar-item spaced " + (isStrikethrough ? "active" : "")}
-        aria-label="Format Strikethrough"
-      >
-        <i className="format strikethrough" />
-      </button>
-      <Divider />
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
-        }}
-        className="toolbar-item spaced"
-        aria-label="Left Align"
-      >
-        <i className="format left-align" />
-      </button>
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
-        }}
-        className="toolbar-item spaced"
-        aria-label="Center Align"
-      >
-        <i className="format center-align" />
-      </button>
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
-        }}
-        className="toolbar-item spaced"
-        aria-label="Right Align"
-      >
-        <i className="format right-align" />
-      </button>
-      <button
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify");
-        }}
-        className="toolbar-item"
-        aria-label="Justify Align"
-      >
-        <i className="format justify-align" />
-      </button>{" "}
+    <div
+      className="flex h-12 items-center  rounded bg-gray-200 px-2"
+      ref={toolbarRef}
+    >
+      <ToolbarButtonGroup divider={true}>
+        <ToolbarButton
+          disabled={!canUndo}
+          onClick={() => {
+            editor.dispatchCommand(UNDO_COMMAND, undefined);
+          }}
+          ariaLabel="Undo"
+        >
+          <RotateCcw className="size-4" />
+        </ToolbarButton>
+
+        <ToolbarButton
+          disabled={!canRedo}
+          onClick={() => {
+            editor.dispatchCommand(REDO_COMMAND, undefined);
+          }}
+          ariaLabel="Redo"
+        >
+          <RotateCw className="size-4" />
+        </ToolbarButton>
+      </ToolbarButtonGroup>
+      <ToolbarButtonGroup divider={true}>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
+          }}
+          active={isBold}
+          ariaLabel="Format Bold"
+        >
+          <BoldIcon className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
+          }}
+          active={isItalic}
+          ariaLabel="Format Italics"
+        >
+          <ItalicIcon className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
+          }}
+          ariaLabel="Format Underline"
+          active={isUnderline}
+        >
+          <UnderlineIcon className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
+          }}
+          active={isStrikethrough}
+          ariaLabel="Format Strikethrough"
+        >
+          <StrikethroughIcon className="size-4" />
+        </ToolbarButton>
+      </ToolbarButtonGroup>
+      <ToolbarButtonGroup divider={false}>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
+          }}
+          ariaLabel="Left Align"
+        >
+          <AlignLeftIcon className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
+          }}
+          ariaLabel="Center Align"
+        >
+          <AlignCenterIcon className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
+          }}
+          ariaLabel="Right Align"
+        >
+          <AlignRightIcon className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify");
+          }}
+          className="toolbar-item"
+          ariaLabel="Justify Align"
+        >
+          <AlignJustifyIcon className="size-4" />
+        </ToolbarButton>
+      </ToolbarButtonGroup>
     </div>
   );
 }

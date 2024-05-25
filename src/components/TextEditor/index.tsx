@@ -21,6 +21,7 @@ import { Note } from "@prisma/client";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { updateNoteContent } from "@/src/actions/note.actions";
 import { NotesContext } from "../NotesProvider";
+import NoteHeader from "../NoteHeader";
 
 // const theme = {
 //   // Theme styling goes here
@@ -77,12 +78,13 @@ export default function TextEditor(props: { note: Note | null }) {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="flex flex-col flex-1 w-full  h-screen">
+      <div className="flex h-screen flex-col space-y-8 border border-red-500 px-12 pt-4">
         <ToolbarPlugin />
-        <div className="flex-1 h-full bg-gray-300">
+        <div className="flex flex-1 flex-col space-y-12 border border-green-500">
+          <NoteHeader note={note} />
           <RichTextPlugin
             contentEditable={
-              <ContentEditable className="py-2 h-full px-4 text-base" />
+              <ContentEditable className="flex-1 text-base outline-0" />
             }
             placeholder={null}
             ErrorBoundary={LexicalErrorBoundary}

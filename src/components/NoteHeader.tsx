@@ -7,13 +7,7 @@ import { updateTitle } from "../actions/note.actions";
 import { useParams, useRouter } from "next/navigation";
 import { NotesContext } from "./NotesProvider";
 
-export default function NoteHeader({
-  folderName,
-  ...props
-}: {
-  note: Note | null;
-  folderName: string;
-}) {
+export default function NoteHeader({ ...props }: { note: Note | null }) {
   const {
     handleTitleNoteChange,
     notes,
@@ -45,11 +39,11 @@ export default function NoteHeader({
 
       handleUpdateNote(tempNote.id, updatedNote);
       handleUpdateTempNote(null);
-      if (window.location.pathname.includes(note.id)) {
-        router.push(
-          `/folder/${folderName}/${updatedNote.folderId}/note/${updatedNote.id}`
-        );
-      }
+      //   if (window.location.pathname.includes(note.id)) {
+      //     router.push(
+      //       `/folder/${folderName}/${updatedNote.folderId}/note/${updatedNote.id}`
+      //     );
+      //   }
       return;
     }
     handleUpdateNote(updatedNote.id, updatedNote);
@@ -71,7 +65,7 @@ export default function NoteHeader({
     <Input
       value={title}
       onChange={handleChange}
-      className="text-3xl font-bold bg-transparent border-t-0 border-r-0 border-l-0  shadow-none"
+      className="text-3xl font-bold bg-transparent border-t-0 border-r-0 border-l-0 shadow-none border-gray-400 rounded-none p-0 pb-1 max-w-lg w-full break-words overflow-hidden"
     />
   );
 }
