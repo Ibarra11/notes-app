@@ -2,7 +2,11 @@ import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/src/lib/utils";
-import Sidebar from "@/src/components/Sidebar";
+
+import Sidebar from "../components/Sidebar";
+import SidebarFolders from "../components/SidebarFolders";
+import SidebarRecentFolders from "../components/SidebarRecentFolders";
+import SidebarMoreActions from "../components/SidebarMoreActions";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -19,13 +23,17 @@ export default function RootLayout({
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased bg-gray-100",
-          fontSans.variable
+          "min-h-screen bg-background bg-gray-100 font-sans antialiased",
+          fontSans.variable,
         )}
       >
-        <div className="flex items-start">
-          <Sidebar />
-          <main className="flex flex-1 h-screen min-h-full">{children}</main>
+        <div className="flex">
+          <Sidebar>
+            <SidebarRecentFolders />
+            <SidebarFolders />
+            <SidebarMoreActions />
+          </Sidebar>
+          <main className="flex h-screen min-h-full flex-1">{children}</main>
         </div>
       </body>
     </html>
