@@ -10,6 +10,7 @@ import { EditorRefPlugin } from "@lexical/react/LexicalEditorRefPlugin";
 import React from "react";
 import { LexicalEditor } from "lexical";
 import { NotesContext } from "./NotesProvider";
+import { useParams } from "next/navigation";
 
 export default function Note({
   note,
@@ -22,6 +23,10 @@ export default function Note({
 }) {
   const { tempNote, handleDeleteNote, handleUpdateTempNote } =
     React.useContext(NotesContext);
+
+  const { noteId } = useParams<Record<"noteId", string>>();
+  const isSelected = note.id === noteId;
+
   return (
     <li>
       <Link
@@ -31,14 +36,14 @@ export default function Note({
             handleUpdateTempNote(null);
           }
         }}
-        className="block p-4 space-y-2 border-b border-gray-300"
+        className={`block space-y-2 border-b border-gray-300 p-4 ${isSelected ? "bg-gray-300" : ""}`}
         href={`/folder/${folderName}/${folderId}/note/${note.id}`}
       >
-        <h3 className="text-lg font-semibold text-gray-700 line-clamp-1">
+        <h3 className="line-clamp-1 text-lg font-semibold text-gray-700">
           {note.title}
         </h3>
         <div className="flex items-center gap-2 text-sm ">
-          <time className="text-gray-600 text-base">
+          <time className="text-base text-gray-600">
             {dayjs(note.updatedAt).format("DD/MM/YYYY")}
           </time>
           <NoteContent content={note.content} />
@@ -66,7 +71,7 @@ function NoteContent({ content }: { content: string }) {
     <LexicalComposer initialConfig={initialConfig}>
       <PlainTextPlugin
         contentEditable={
-          <ContentEditable className="text-gray-500 text-sm line-clamp-1" />
+          <ContentEditable className="line-clamp-1 text-sm text-gray-500" />
         }
         placeholder={null}
         ErrorBoundary={LexicalErrorBoundary}

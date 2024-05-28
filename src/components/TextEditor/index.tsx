@@ -78,9 +78,9 @@ export default function TextEditor(props: { note: Note | null }) {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="flex h-screen flex-col space-y-8 border border-red-500 px-12 pt-4">
+      <div className="flex h-screen flex-col space-y-8 px-12 pt-4">
         <ToolbarPlugin />
-        <div className="flex flex-1 flex-col space-y-12 border border-green-500">
+        <div className="flex flex-1 flex-col space-y-12">
           <NoteHeader note={note} />
           <RichTextPlugin
             contentEditable={

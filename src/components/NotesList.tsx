@@ -19,6 +19,7 @@ export default function NotesList() {
   //     handleNotesChange(nextNotes);
   //   }
   // }, [noteId]);
+  console.log("notes list");
 
   function handleCreateNote() {
     const newNote: Prisma.Note = {
@@ -36,7 +37,7 @@ export default function NotesList() {
   }
 
   return (
-    <div className="w-96 bg-gray-200 border-r border-gray-400">
+    <div className="w-96 border-r border-gray-400 bg-gray-200">
       <NotesListHeader
         noteCount={notes.length}
         onCreateNote={handleCreateNote}
